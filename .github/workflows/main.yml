@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylistic Analysis of the Gettysburg Address</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // Tailwind 配置
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a365d',    // 深蓝主色（体现庄重感）
+                        secondary: '#e5e7eb',  // 浅灰辅助色
+                        accent: '#3b82f6',     // 蓝色强调色
+                        highlight: '#4f46e5',  // 紫色高亮色（用于中文注释）
+                        dark: '#111827',       // 深色文本
+                        light: '#f9fafb',      // 浅色背景
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'serif'],    // 正文衬线字体（增强学术感）
+                        sans: ['Inter', 'system-ui', 'sans-serif'], // 导航等无衬线字体
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        /* 隐藏可能的AI角标 */
+        [id*="ai"], 
+        [id*="chat"], 
+        [id*="bot"], 
+        [class*="ai-"], 
+        [class*="chat-"], 
+        [class*="bot-"],
+        [style*="fixed"][style*="bottom"][style*="right"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            z-index: -1 !important;
+        }
+        
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .bg-blur {
+                backdrop-filter: blur(8px);
+            }
+            .section-fade {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+            .section-fade.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark font-serif antialiased text-base md:text-lg">
+    <!-- 顶部导航栏 -->
+    <header class="sticky top-0 z-50 bg-primary/95 text-white bg-blur shadow-md transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-3 md:mb-0">
+                <i class="fa fa-book text-accent text-2xl mr-3"></i>
+                <h1 class="text-xl md:text-2xl font-bold">Gettysburg Address Analysis</h1>
+            </div>
+            
+            <!-- 桌面导航 -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="#intro" class="hover:text-accent transition-colors duration-200">Introduction</a>
+                <a href="#rhythm" class="hover:text-accent transition-colors duration-200">Phonological Rhythm</a>
+                <a href="#syntax" class="hover:text-accent transition-colors duration-200">Syntactic Structure</a>
+                <a href="#vocabulary" class="hover:text-accent transition-colors duration-200">Vocabulary & Imagery</a>
+                <a href="#discourse" class="hover:text-accent transition-colors duration-200">Macro-discourse Structure</a>
+                <a href="#conclusion" class="hover:text-accent transition-colors duration-200">Conclusion</a>
+                <a href="#references" class="hover:text-accent transition-colors duration-200">References</a>
+            </nav>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menuBtn" class="md:hidden text-white text-xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobileMenu" class="hidden md:hidden bg-primary/98 bg-blur px-4 py-2 shadow-lg">
+            <nav class="flex flex-col space-y-3 py-2">
+                <a href="#intro" class="hover:text-accent transition-colors duration-200 py-1">Introduction</a>
+                <a href="#rhythm" class="hover:text-accent transition-colors duration-200 py-1">Phonological Rhythm</a>
+                <a href="#syntax" class="hover:text-accent transition-colors duration-200 py-1">Syntactic Structure</a>
+                <a href="#vocabulary" class="hover:text-accent transition-colors duration-200 py-1">Vocabulary & Imagery</a>
+                <a href="#discourse" class="hover:text-accent transition-colors duration-200 py-1">Macro-discourse Structure</a>
+                <a href="#conclusion" class="hover:text-accent transition-colors duration-200 py-1">Conclusion</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <!-- 引言部分 -->
+        <section id="intro" class="section-fade mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-primary">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">Introduction <span class="text-highlight text-xl font-normal">（引言）</span></h2>
+                <p class="mb-4 text-lg leading-relaxed">
+                    On November 19, 1863, <span class="text-highlight font-medium">Abraham Lincoln</span> <span class="text-highlight text-sm">（亚伯拉罕·林肯）</span> delivered the <span class="text-highlight font-medium">Gettysburg Address</span> <span class="text-highlight text-sm">（葛底斯堡演说）</span> at the <span class="text-highlight font-medium">Gettysburg</span> <span class="text-highlight text-sm">（葛底斯堡）</span> battlefield. At that time, the American <span class="text-highlight font-medium">Civil War</span> <span class="text-highlight text-sm">（内战）</span> had been going on for more than two years. The speech was not only to commemorate the soldiers who died in the <span class="text-highlight font-medium">Battle of Gettysburg</span> <span class="text-highlight text-sm">（葛底斯堡战役）</span>, but also to unite the national will, reiterate the founding principle that "all men are created equal," and inspire the people to continue fighting for the preservation of national unity and freedom.
+                </p>
+                <p class="text-lg leading-relaxed">
+                   This article, based on specific divisions of labor, analyzes the stylistic features of the speech from four dimensions: <span class="text-highlight font-medium">phonological rhythm</span> <span class="text-highlight text-sm">（音韵节奏）</span>, <span class="text-highlight font-medium">syntactic structure</span> <span class="text-highlight text-sm">（句法结构）</span>, <span class="text-highlight font-medium">vocabulary and imagery</span> <span class="text-highlight text-sm">（词汇与意象）</span>, and <span class="text-highlight font-medium">macro-discourse structure</span> <span class="text-highlight text-sm">（宏观语篇结构）</span>, decoding how Lincoln achieved his speech purpose through exquisite language design.
+                </p>
+            </div>
+        </section>
+        
+        <!-- 音韵节奏分析 -->
+        <section id="rhythm" class="section-fade mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-accent">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">I. Analysis of Phonological Rhythm <span class="text-highlight text-xl font-normal">（音韵节奏分析）</span></h2>
+                <p class="mb-4 text-lg leading-relaxed">
+                    In <span class="text-highlight font-medium">stylistics</span> <span class="text-highlight text-sm">（文体学）</span>, <span class="text-highlight font-medium">phonology</span> <span class="text-highlight text-sm">（音韵学）</span> refers to the study of the sound system of language and its specific application, covering acoustic features such as <span class="text-highlight font-medium">alliteration</span> <span class="text-highlight text-sm">（头韵）</span>, <span class="text-highlight font-medium">end rhyme</span> <span class="text-highlight text-sm">（尾韵）</span>, and <span class="text-highlight font-medium">rhythm</span> <span class="text-highlight text-sm">（节奏）</span>. By regulating the regularity of sounds, it enhances the musicality of the text, assists in constructing the style, conveys expressive intentions, and enhances emotional appeal and audience perception.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Lincoln's speeches, such as the Gettysburg Address, are not merely transmissions of words. Instead, they transform ideas into "musical movements" perceivable by the ear through a meticulously crafted "sound structure," deeply moving the audience through rhythm and melody.
+                </p>
+                
+                <!-- 1. 关键词重复 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">1. Repetition of Key Terms: Anchoring Core Ideas Like a Musical Theme <span class="text-highlight text-lg font-normal">（关键词重复：如乐章主旋律，锚定核心思想）</span></h3>
+                    <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span><strong>Core Technique:</strong> In the Gettysburg Address, Lincoln repeatedly uses terms such as "dedicate", "consecrate", "hallow", "people", and "nation".</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-music text-primary mt-1 mr-3"></i>
+                                <span><strong>Musical Analogy:</strong> This repetition perfectly mimics the "theme melody" in music—just as a symphony's core melody recurs to deepen memory, these key words reinforce the central idea of "devoting oneself to freedom and building a nation for the people" in the audience's minds.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-star text-primary mt-1 mr-3"></i>
+                                <span><strong>Rhetorical Effect:</strong> Each repetition is not redundant but an "emotional and cognitive reprise," turning abstract values into concrete, profound impressions that finally take root in listeners' hearts.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 2. 头韵与尾韵 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">2. Alliteration and Rhyme: Endowing the Speech with Elegant Rhythm Like Musical Instrument Tones <span class="text-highlight text-lg font-normal">（头韵与尾韵：如乐器韵律，赋予演讲优雅节奏）</span></h3>
+                    <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span><strong>Core Examples:</strong> Lincoln leverages <span class="text-highlight font-medium">alliteration</span> <span class="text-highlight text-sm">（头韵）</span> to add musicality, such as the soft "p" sound in "poor power" and the smooth "f" sound in "four score".</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-music text-primary mt-1 mr-3"></i>
+                                <span><strong>Musical Analogy:</strong> These phonetic devices are comparable to piano legatos or violin staccatos—they give the speech a natural, flowing rhythm that transcends "written text stiffness".</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-star text-primary mt-1 mr-3"></i>
+                                <span><strong>Rhetorical Effect:</strong> Listeners can grasp the speech's melodic beauty purely through hearing (no need for a script). This "sound-rhyme harmony" makes the serious content elegant and memorable, lowering the barrier to emotional resonance.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 3. 平行结构 -->
+                <div>
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">3. Parallel Structure: Building Unquestionable Rhetorical Power Like a Musical Climax <span class="text-highlight text-lg font-normal">（平行结构：如乐章高潮，积蓄不容置疑的修辞力量）</span></h3>
+                    <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span><strong>Core Example:</strong> The classic <span class="text-highlight font-medium">parallel sentence</span> <span class="text-highlight text-sm">（平行句）</span>—"we can not dedicate—we can not consecrate—we can not hallow—this ground"—stands as the peak of Lincoln's "sound rhetoric".</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-music text-primary mt-1 mr-3"></i>
+                                <span><strong>Musical Analogy:</strong> This structure mirrors the escalating climax of a musical piece: the three "we can not" phrases form a repeating rhythmic pattern, while the semantic intensity of "dedicate → consecrate → hallow" gradually rises (like layers of sound in a symphony).</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-star text-primary mt-1 mr-3"></i>
+                                <span><strong>Rhetorical Effect:</strong> It avoids fancy wording; instead, the stacked rhythm turns a "statement" into a "proclamation". Listeners feel both reverence for martyrs and determination for the mission in this unshakable rhythm.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 句法结构分析 -->
+        <section id="syntax" class="section-fade mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-primary">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">II. Analysis of Syntactic Structure <span class="text-highlight text-xl font-normal">（句法结构分析）</span></h2>
+                <p class="mb-4 text-lg leading-relaxed">
+                    <span class="text-highlight font-medium">Syntactic structure</span> <span class="text-highlight text-sm">（句法结构）</span> in stylistics refers to the study of the combination rules and organizational methods of elements at the sentence level (clauses, phrases, components), encompassing forms such as the alternation of long and short sentences, <span class="text-highlight font-medium">parallel structures</span> <span class="text-highlight text-sm">（平行结构）</span>, <span class="text-highlight font-medium">periodic sentences</span> <span class="text-highlight text-sm">（圆周句）</span>, and <span class="text-highlight font-medium">thematic progression</span> <span class="text-highlight text-sm">（主位推进）</span>. It is not merely a grammatical framework but a tool serving stylistic purposes—by regulating sentence complexity and logical cohesion, it constructs a sense of solemnity or dynamism in the text, controls the rhythm of information delivery, strengthens logical argumentation and emotional appeal, and aids in achieving specific expressive intentions.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Lincoln's careful "construction" of sentence structure not only creates a solemn tone for the speech but also precisely controls the flow of information, builds tight logic, and guides the audience to gradually accept his views.
+                </p>
+                
+                <!-- 1. 句子长短的匠心 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">1. Sentence Length: Creating Rhythm and Force <span class="text-highlight text-lg font-normal">（句子长短的匠心：构筑演说的韵律与气势）</span></h3>
+                    <p class="mb-4 leading-relaxed">
+                        Lincoln carefully controls the length of his sentences. He mixes long and short sentences to give the speech a grand rhythm and strong emotional impact.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <h4 class="font-semibold mb-2 text-primary">A Long Opening for Historical Weight <span class="text-highlight text-base font-normal">（绵长开篇，奠定历史厚重感）</span></h4>
+                            <p class="text-sm">
+                                The first sentence of the speech is a long and complex <span class="text-highlight font-medium">periodic sentence</span> <span class="text-highlight text-xs">（圆周句）</span>: "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal." This sentence has many parts: a time phrase, a main subject and verb, and multiple descriptive phrases. This long structure sounds formal and serious, like the <span class="text-highlight font-medium">Bible</span> <span class="text-highlight text-xs">（《圣经》）</span> or the <span class="text-highlight font-medium">Declaration of Independence</span> <span class="text-highlight text-xs">（《独立宣言》）</span>. It immediately pulls the listeners into a grand historical story. The large amount of information in this long sentence establishes the speech's historical depth and intellectual height from the very beginning.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <h4 class="font-semibold mb-2 text-primary">Mixing Long and Short Sentences <span class="text-highlight text-base font-normal">（长短交错，驱动情感与逻辑）</span></h4>
+                            <p class="text-sm">
+                                In the middle of the speech, Lincoln skillfully switches between long and short sentences. For example, after a long sentence about the war, he uses a shorter one: "We are met on a great battle-field of that war." This change brings the big history down to the present place. Switching between long and short sentences keeps the speech from being boring. It allows for complex ideas but also uses short sentences to emphasize key points.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <h4 class="font-semibold mb-2 text-primary">A Powerful and Memorable Ending <span class="text-highlight text-base font-normal">（精悍收尾，迸发宣言式力量）</span></h4>
+                            <p class="text-sm">
+                                The speech ends with the famous phrase: "...and that government of the people, by the people, for the people, shall not perish from the earth." While this is one long sentence, its inside structure is made of three short, <span class="text-highlight font-medium">parallel phrases</span> <span class="text-highlight text-xs">（平行短语）</span>. These phrases build up like waves, one after another, creating great force and ending with a very strong and decisive statement. This makes the ending unforgettable.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. 信息流的精密控制 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">2. Controlling the Flow of Information: Guiding the Listener's Thoughts <span class="text-highlight text-lg font-normal">（信息流的精密控制：引导听众思维的路径）</span></h3>
+                    <p class="mb-4 leading-relaxed">
+                        Lincoln, like a skilled guide, uses syntax to carefully control how information is given. He leads his listeners to accept his points step by step.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 gap-6 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <h4 class="font-semibold mb-2 text-primary">Chain of Logic through "Thematic Progression" <span class="text-highlight text-base font-normal">（主位推进的链条式逻辑）</span></h4>
+                            <p class="text-base">
+                                Lincoln skillfully uses "thematic progression" <span class="text-highlight font-medium">（主位推进）</span>, a syntactic tool where the topic of one sentence connects to the information in the previous one.
+                                <br><br>
+                                <strong>First sentence:</strong> The core information (the "Rheme" <span class="text-highlight font-medium">（述位）</span>) is about "a new nation..."
+                                <br>
+                                <strong>Second sentence:</strong> The starting topic (the "Theme" <span class="text-highlight font-medium">（主位）</span>) then talks about "Now we are engaged in a great civil war, testing whether that nation... can long endure."
+                                <br><br>
+                                Here, "that nation" is the link. This method creates a chain of logic. It makes the flow of information smooth, and the listener's thoughts are tightly guided by the speaker towards his final conclusion.
+                            </p>
+                            
+                            <!-- 添加的选择题 -->
+                            <div class="mt-6 bg-white rounded-lg p-4 border border-secondary shadow-sm">
+                                <h5 class="font-semibold mb-3 text-primary">Quiz: Thematic Progression Type</h5>
+                                <p class="mb-3 text-base italic">
+                                    "we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live."
+                                </p>
+                                <p class="mb-3 font-medium">What type of thematic progression is used in the above passage?</p>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center">
+                                        <input type="radio" id="optionA" name="quiz" value="A" class="mr-2">
+                                        <label for="optionA" class="text-base">A: Derived Thematic Progression <span class="text-highlight text-sm">（派生主位发展型）</span></label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="optionB" name="quiz" value="B" class="mr-2">
+                                        <label for="optionB" class="text-base">B: Simple Linear Thematic Progression <span class="text-highlight text-sm">（简单线性主位发展型）</span></label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="optionC" name="quiz" value="C" class="mr-2">
+                                        <label for="optionC" class="text-base">C: Continuous Thematic Progression <span class="text-highlight text-sm">（连续主位发展型）</span></label>
+                                    </div>
+                                </div>
+                                <button id="submitQuiz" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition-colors duration-200">Submit Answer</button>
+                                
+                                <!-- 结果显示区域 -->
+                                <div id="quizResult" class="mt-4 hidden"></div>
+                                
+                                <!-- 动画效果容器 -->
+                                <div id="animationContainer" class="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3. 庄重感与逻辑说服力的核心句法手段 -->
+                <div>
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">3. Key Syntactic Tools for Solemnity and Persuasion <span class="text-highlight text-lg font-normal">（庄重感与逻辑说服力的核心句法手段）</span></h3>
+                    <p class="mb-4 leading-relaxed">
+                        <span class="text-highlight font-medium">Parallelism</span> <span class="text-highlight text-sm">（平行结构）</span> and <span class="text-highlight font-medium">periodic sentences</span> <span class="text-highlight text-sm">（圆周句）</span> are the two main pillars that build the speech's solemn tone and logical power.
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-4">
+                        <table class="min-w-full bg-white border border-secondary rounded-lg">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="py-3 px-4 text-left">Syntactic Device</th>
+                                    <th class="py-3 px-4 text-left">Core Example</th>
+                                    <th class="py-3 px-4 text-left">Rhetorical Effect</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-secondary">
+                                    <td class="py-3 px-4 font-semibold">Parallelism <span class="text-highlight text-sm">（平行结构）</span></td>
+                                    <td class="py-3 px-4 italic">"we can not dedicate—we can not consecrate—we can not hallow—this ground"</td>
+                                    <td class="py-3 px-4">Three parallel negated verbs (dedicate, consecrate, hallow) with progressively stronger meaning, emphasizing the sacredness and transcendence of the martyrs' sacrifice</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4 font-semibold">Periodic Sentence <span class="text-highlight text-sm">（圆周句）</span></td>
+                                    <td class="py-3 px-4 italic">"Four score and seven years ago our fathers brought forth on this continent, a new nation..."</td>
+                                    <td class="py-3 px-4">Suspends core meaning until the end, creating a sense of suspense, demonstrating rigorous thinking, and achieving ultimate emphasis</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 词汇与意象分析 -->
+        <section id="vocabulary" class="section-fade mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-accent">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">III. Analysis of Vocabulary and Imagery <span class="text-highlight text-xl font-normal">（词汇与意象分析）</span></h2>
+                <p class="mb-4 text-lg leading-relaxed">
+                    Lincoln's precise selection of vocabulary and ingenious construction of imagery transformed abstract ideas into tangible concepts, successfully evoking emotional resonance among the audience and forging shared values.
+                </p>
+                <p class="mb-4 text-lg leading-relaxed">
+                    In <span class="text-highlight font-medium">stylistics</span> <span class="text-highlight text-sm">（文体学）</span>, <span class="text-highlight font-medium">vocabulary selection</span> <span class="text-highlight text-sm">（词汇选择）</span> refers to the process of choosing words with specific semantic, emotional, and cultural connotations based on communication purposes, context, and audience, in order to shape the text's style and convey core intentions. <span class="text-highlight font-medium">Imagery</span> <span class="text-highlight text-sm">（意象）</span>, on the other hand, involves converting abstract ideas into perceptible scenes or concepts through specific words or phrases. As a key vehicle connecting linguistic form with emotional and logical expression, both vocabulary and imagery work together to enhance the persuasiveness and appeal of a speech.
+                </p>
+                
+                <!-- 核心词汇场 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">1. Core Lexical Fields: Constructing a Solemn and Sacred Stylistic Tone</h3>
+                    <p class="mb-4 leading-relaxed">
+                        Lincoln employed three highly interconnected <span class="text-highlight font-medium">lexical fields</span> <span class="text-highlight text-sm">（词汇场）</span> to endow his political speech with a solemn and sacred stylistic tone:
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-4">
+                        <table class="min-w-full bg-white border border-secondary rounded-lg">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="py-3 px-4 text-left">Dimension of Analysis</th>
+                                    <th class="py-3 px-4 text-left">Core Vocabulary / Expressions</th>
+                                    <th class="py-3 px-4 text-left">Frequency of Appearance</th>
+                                    <th class="py-3 px-4 text-left">Stylistic Function</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-secondary">
+                                    <td class="py-3 px-4 font-semibold">Religious Semantic Field<span class="text-highlight text-sm">（宗教语义场）</span></td>
+                                    <td class="py-3 px-4">consecrate, hallow, under God</td>
+                                    <td class="py-3 px-4">3</td>
+                                    <td class="py-3 px-4">Link "devoting the land" and "the nation's rebirth" to a sense of religious ritual, endowing secular political goals with sacredness</td>
+                                </tr>
+                                <tr class="border-b border-secondary bg-gray-50">
+                                    <td class="py-3 px-4 font-semibold">Dedication Semantic Field<span class="text-highlight text-sm">（奉献语义场）</span></td>
+                                    <td class="py-3 px-4">dedicate, devotion, unfinished work</td>
+                                    <td class="py-3 px-4">5</td>
+                                    <td class="py-3 px-4">Construct a logical chain of "sacrifice-inheritance," guiding the audience from "remembrance" to "action"</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4 font-semibold">Birth / Rebirth Semantic Field<span class="text-highlight text-sm">（诞生/重生语义场）</span></td>
+                                    <td class="py-3 px-4">brought forth, new birth</td>
+                                    <td class="py-3 px-4">2</td>
+                                    <td class="py-3 px-4">Compare the nation's destiny to "the growth of life," endowing the Civil War with the meaning of "nirvana and rebirth"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 抽象与具体词汇搭配 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">2. Abstract and Concrete Word Collocation: Grounding Abstract Concepts</h3>
+                    <p class="mb-4 leading-relaxed">
+                        Lincoln adopted a collocation strategy of "taking concrete words as anchors and abstract words as the soul," grounding abstract concepts and enhancing the credibility and empathy of the style:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <h4 class="font-semibold mb-2 text-primary">Abstract Words Anchor Core Ideas</h4>
+                            <p class="text-sm">
+                                "liberty," "freedom," and "equality" form the logical core of Lincoln's speech. Such abstract words clarify the speech's "value stance" stylistically, ensuring the accurate transmission of ideas.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <h4 class="font-semibold mb-2 text-primary">Concrete Words Construct Perceptible Scenes</h4>
+                            <p class="text-sm">
+                                By collocating with concrete expressions such as "a great battlefield" and "these honored dead," Lincoln stylistically provides a "tangible" carrier for abstract concepts. This allows the audience to intuitively grasp the weight of "sacrificing for freedom."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 代词策略 -->
+                <div>
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">3. Pronoun Strategy: Constructing a "Discourse Community"</h3>
+                    <p class="mb-4 leading-relaxed">
+                        <span class="text-highlight font-medium">Pronouns</span> <span class="text-highlight text-sm">（代词）</span> are key tools for constructing a "discourse community" <span class="text-highlight font-medium">（话语共同体）</span>:
+                    </p>
+                    
+                    <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                        <p class="mb-3">
+                            Lincoln frequently used "we" and "our," as in "our fathers" and "we here highly resolve." Stylistically, this weakened the distance between "individuals" and "the speaker," integrating the audience into the "national community" and transforming "striving for the nation" from a "call" into a "shared responsibility." Meanwhile, he used "they" to refer to the martyrs. Through the semantic connection between "we" and "they," a "hereditary relationship between the living and the dead" was stylistically established, further strengthening the collective sense of mission.
+                        </p>
+                        
+                        <!-- 代词使用频率分析图表 -->
+                        <div class="mt-6">
+                            <h4 class="font-semibold mb-3 text-primary text-center">Key Pronoun Usage Frequency in the Gettysburg Address</h4>
+                            <div class="flex justify-center">
+                                <div class="w-full md:w-1/2 lg:w-1/3">
+                                    <canvas id="pronounChart"></canvas>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 text-center mt-2">Data Source: Full-text analysis of the Gettysburg Address</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 宏观语篇结构分析 -->
+        <section id="discourse" class="section-fade mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-primary">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">IV. Analysis of Macro-discourse Structure <span class="text-highlight text-xl font-normal">（宏观语篇结构分析）</span></h2>
+                <p class="mb-4 text-lg leading-relaxed">
+                    The <span class="text-highlight font-medium">macro-structure</span> <span class="text-highlight text-sm">（宏观结构）</span> of the Gettysburg Address is clear and logical, like a carefully drawn "thought map," guiding the audience from reviewing history to looking forward to the future, and gradually accepting the core proposition of the speech.
+                </p>
+                
+                <!-- 1. 回顾过去-审视现在-展望未来 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">1. Macro-pattern of "Reviewing the Past - Examining the Present - Looking to the Future" <span class="text-highlight text-lg font-normal">（"回顾过去 - 审视现在 - 展望未来" 的宏观模式）</span></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <div class="text-center mb-2">
+                                <i class="fa fa-history text-primary text-2xl"></i>
+                                <h4 class="font-semibold mt-1">Reviewing the Past</h4>
+                            </div>
+                            <p class="text-sm text-center">
+                                The speech begins with "Four score and seven years ago..." reviewing the founding history of the United States and mentioning the founding principle that "all men are created equal," laying the historical foundation for the speech.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <div class="text-center mb-2">
+                                <i class="fa fa-eye text-primary text-2xl"></i>
+                                <h4 class="font-semibold mt-1">Examining the Present</h4>
+                            </div>
+                            <p class="text-sm text-center">
+                                "Now we are engaged in a great civil war..." brings the perspective back to the present, pointing out that the nation is undergoing the test of civil war and clarifying the realistic background of the speech.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                            <div class="text-center mb-2">
+                                <i class="fa fa-binoculars text-primary text-2xl"></i>
+                                <h4 class="font-semibold mt-1">Looking to the Future</h4>
+                            </div>
+                            <p class="text-sm text-center">
+                                "...that government of the people, by the people, for the people, shall not perish from the earth" looks to the future, expressing firm belief in maintaining democratic government.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. 问题-解决模式 -->
+                <div class="mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">2. "Problem-Solution" Pattern: Enhancing Persuasiveness <span class="text-highlight text-lg font-normal">（"问题 - 解决" 模式：增强说服力）</span></h3>
+                    <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-accent">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold mb-2 text-primary flex items-center">
+                                    <i class="fa fa-exclamation-triangle text-primary mr-2"></i>
+                                    Problem
+                                </h4>
+                                <p class="text-sm">
+                                    The nation is undergoing the test of civil war, facing the risk of division, and the founding principle of "all men are created equal" is challenged.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2 text-primary flex items-center">
+                                    <i class="fa fa-check-square-o text-primary mr-2"></i>
+                                    Solution
+                                </h4>
+                                <p class="text-sm">
+                                    Commemorate the sacrifice of the martyrs, inherit their legacy, continue to fight for the preservation of national unity and the realization of freedom and equality, and let the democratic government exist forever.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3. 衔接与连贯 -->
+                <div>
+                    <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">3. Cohesion and Coherence: Constructing a Tight Whole <span class="text-highlight text-lg font-normal">（衔接与连贯：构建严密整体）</span></h3>
+                    <p class="mb-4 leading-relaxed">
+                        The speech ensures smooth transition of thoughts through <span class="text-highlight font-medium">connectives</span> <span class="text-highlight text-sm">（连接词）</span> and semantic connections. <span class="text-highlight font-medium">Cohesive</span> <span class="text-highlight text-sm">（衔接）</span> devices such as "but," "in a larger sense," and "it is for us to be here dedicated to..." make the logic between paragraphs and sentences tight.
+                    </p>
+                    <div class="bg-primary/5 rounded-lg p-5 border border-primary/20">
+                        <p class="italic text-gray-700">
+                            For example, after mentioning "we can not consecrate this ground," the transition with "in a larger sense" points out that "it is the sacrifice of the martyrs that has consecrated this ground," achieving a natural semantic transition. Then, "it is for us to be here dedicated to..." leads to the mission that the audience should undertake, making the entire speech a tight whole, avoiding fragmentation of thoughts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 结论部分 -->
+        <section id="conclusion" class="section-fade">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-accent">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">V. Synthesis and Conclusion <span class="text-highlight text-xl font-normal">（综合与结论）</span></h2>
+                <div class="space-y-4 leading-relaxed">
+                    <p>
+                        Comprehensive analysis of the stylistic features from the above four dimensions shows that Lincoln successfully achieved the purpose of the speech through exquisite stylistic design in the Gettysburg Address.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-primary">
+                            <h4 class="font-semibold mb-2 text-primary">Phonological Rhythm and Syntactic Structure</h4>
+                            <p class="text-sm">
+                                In terms of <span class="text-highlight font-medium">phonological rhythm</span> <span class="text-highlight text-xs">（音韵节奏）</span>, the use of key word repetition, alliteration and end rhyme, and rhythm in parallel structures gives the speech musicality and memorability, enhancing emotional appeal and call to action. In terms of <span class="text-highlight font-medium">syntactic structure</span> <span class="text-highlight text-xs">（句法结构）</span>, the use of alternating long and short sentences, periodic sentences, parallel and contrastive structures creates a sense of solemnity, controls the flow of information, and constructs tight logic.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-5 border-l-2 border-primary">
+                            <h4 class="font-semibold mb-2 text-primary">Vocabulary & Imagery and Discourse Structure</h4>
+                            <p class="text-sm">
+                                In terms of <span class="text-highlight font-medium">vocabulary and imagery</span> <span class="text-highlight text-xs">（词汇与意象）</span>, the use of core lexical fields, the combination of abstract and concrete words, and pronoun strategies evoke emotional resonance and shape shared values. In terms of <span class="text-highlight font-medium">macro-discourse structure</span> <span class="text-highlight text-xs">（宏观语篇结构）</span>, the patterns of "reviewing the past - examining the present - looking to the future" and "problem-solution," as well as cohesive devices, guide the audience's thinking and enhance persuasiveness.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <p>
+                        These stylistic features work together to make the speech not only a eulogy to commemorate the martyrs, but also a spiritual banner to unite the national will, reiterate the founding principles, and inspire the people to strive, which still has profound influence today.
+                    </p>
+                    
+                    <!-- 新增：顺应理论视角 -->
+                    <div class="bg-primary/5 rounded-lg p-5 border border-primary/20 mt-6">
+                        <h4 class="font-semibold mb-2 text-primary">Academic Research: Adaptation Theory Perspective</h4>
+                        <p class="text-sm">
+                            Zhong Xueke (2014) analyzed the Gettysburg Address from the perspective of adaptation theory, arguing that Lincoln's choices of language structure, expression methods, and strategies during the speech were dynamic adaptations to the context and communicative purposes. Through careful selection of vocabulary, sentence patterns, and rhetoric, Lincoln successfully adapted to the social and cultural context of the time and the psychological expectations of the audience, achieving his political communication goals. This language adaptation strategy not only enhanced the persuasiveness of the speech, but also made it a model of American political discourse (Zhong Xueke, 2014).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 参考文献 -->
+        <section id="references" class="section-fade mt-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-primary">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 pb-2 border-b border-secondary">References</h2>
+                <div class="space-y-3 text-sm leading-relaxed">
+                    <p>
+                        [1] 刘怡春. 词汇衔接的语篇功能与英语演说词的文本解读——以林肯《葛底斯堡演说》为例[J]. 琼州学院学报, 2011, 18(04): 159-160. DOI: CNKI:SUN:QZDX.0.2011-04-066.
+                    </p>
+                    <p>
+                        [2] 钟雪珂. 顺应理论视角的《葛底斯堡演说》语用分析[J]. 钦州学院学报, 2014, 29(09): 35-38. DOI: CNKI:SUN:QZSD.0.2014-09-008.
+                    </p>
+                    <p>
+                        [3] Zyskind, H. A rhetorical analysis of the Gettysburg Address[J]. The Journal of General Education, 1950, 4(3): 202-212.
+                    </p>
+                    <p>
+                        [4] Leech, G. N., & Short, M. Style in fiction: A linguistic introduction to English fictional prose[M]. Pearson Education, 2007.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- 页脚 -->
+    <footer class="bg-primary text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">Gettysburg Address Stylistic Analysis</h3>
+                    <p class="text-gray-300 text-sm">In-depth Analysis Based on Stylistic Theory</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#intro" class="hover:text-accent transition-colors duration-200">
+                        <i class="fa fa-arrow-up"></i> Back to Top
+                    </a>
+                    <a href="#references" class="hover:text-accent transition-colors duration-200">
+                        <i class="fa fa-file-text-o"></i> References
+                    </a>
+                    <a href="#" class="hover:text-accent transition-colors duration-200">
+                        <i class="fa fa-info-circle"></i> About This Study
+                    </a>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-white/20 text-center text-gray-300 text-sm">
+               2025 Gettysburg Address Research | English Classics Reading Group
+            </div>
+        </div>
+    </footer>
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动端菜单（如果打开）
+                document.getElementById('mobileMenu').classList.add('hidden');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // 减去导航栏高度
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 滚动动画
+        function checkScroll() {
+            const sections = document.querySelectorAll('.section-fade');
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const triggerBottom = window.innerHeight * 0.8;
+                
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('active');
+                }
+            });
+        }
+        
+        // 检测并移除可能的AI角标
+        function removeAICornerMark() {
+            // 查找可能的AI角标元素
+            const aiMarkers = document.querySelectorAll([
+                '[id*="ai"]',
+                '[id*="chat"]',
+                '[id*="bot"]',
+                '[class*="ai-"]',
+                '[class*="chat-"]',
+                '[class*="bot-"]',
+                '[style*="fixed"][style*="bottom"][style*="right"]'
+            ].join(','));
+            
+            aiMarkers.forEach(marker => {
+                // 检查元素内容是否包含AI相关关键词
+                const hasAIText = marker.textContent.toLowerCase().includes('ai') || 
+                                marker.textContent.toLowerCase().includes('智能') ||
+                                marker.textContent.toLowerCase().includes('机器人');
+                
+                // 如果角标通常较小
+                const isSmallElement = marker.offsetWidth < 150 && marker.offsetHeight < 150;
+                
+                if (hasAIText || isSmallElement) {
+                    marker.remove();
+                    console.log('Removed potential AI corner mark');
+                }
+            });
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            checkScroll();
+            // 尝试延迟一点执行，确保所有内容都已加载
+            setTimeout(removeAICornerMark, 1000);
+        });
+        
+        // 滚动时检查元素
+        window.addEventListener('scroll', checkScroll);
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('py-2');
+                header.classList.remove('py-3');
+            } else {
+                header.classList.add('py-3');
+                header.classList.remove('py-2');
+            }
+        });
+        
+        // 绘制代词使用频率饼图
+        window.addEventListener('load', function() {
+            const ctx = document.getElementById('pronounChart').getContext('2d');
+            
+            // 使用与页面主题一致的颜色
+            const primaryColor = '#1a365d'; // 深蓝主色
+            const accentColor = '#3b82f6';   // 蓝色强调色
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['WE', 'OUR', 'I'],
+                    datasets: [{
+                        data: [83, 17, 0],
+                        backgroundColor: [
+                            primaryColor,
+                            accentColor,
+                            '#e5e7eb' // 浅灰辅助色
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', 'system-ui', 'sans-serif'",
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    return `${label}: ${value}%`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        });
+        
+        // 主位推进选择题功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submitQuiz');
+            const quizResult = document.getElementById('quizResult');
+            const animationContainer = document.getElementById('animationContainer');
+            
+            submitBtn.addEventListener('click', function() {
+                // 获取选中的选项
+                const selectedOption = document.querySelector('input[name="quiz"]:checked');
+                
+                if (!selectedOption) {
+                    quizResult.innerHTML = '<p class="text-red-500">Please select an option!</p>';
+                    quizResult.classList.remove('hidden');
+                    return;
+                }
+                
+                // 清除之前的结果和动画
+                quizResult.innerHTML = '';
+                animationContainer.innerHTML = '';
+                
+                // 检查答案
+                if (selectedOption.value === 'C') {
+                    // 正确答案
+                    quizResult.innerHTML = '<p class="text-green-600 font-medium">Correct! The answer is C: Continuous Thematic Progression <span class="text-highlight text-sm">（连续主位发展型）</span></p>';
+                    createConfetti();
+                } else {
+                    // 错误答案
+                    quizResult.innerHTML = '<p class="text-red-500 font-medium">Incorrect. The correct answer is C: Continuous Thematic Progression <span class="text-highlight text-sm">（连续主位发展型）</span></p>';
+                    createSadFace();
+                }
+                
+                // 显示结果
+                quizResult.classList.remove('hidden');
+                
+                // 5秒后自动隐藏结果
+                setTimeout(function() {
+                    quizResult.classList.add('hidden');
+                }, 5000);
+            });
+            
+            // 创建撒花动画
+            function createConfetti() {
+                const confettiContainer = document.createElement('div');
+                confettiContainer.className = 'absolute inset-0 flex items-center justify-center';
+                
+                // 创建100个彩色纸屑
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'absolute w-2 h-2 rounded-full animate-fall';
+                    
+                    // 随机颜色
+                    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // 随机位置和动画
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                    
+                    confettiContainer.appendChild(confetti);
+                }
+                
+                animationContainer.appendChild(confettiContainer);
+                
+                // 添加动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fall {
+                        0% {
+                            transform: translateY(-100vh) rotate(0deg);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(360deg);
+                            opacity: 0;
+                        }
+                    }
+                    .animate-fall {
+                        animation: fall linear forwards;
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // 5秒后移除动画
+                setTimeout(function() {
+                    confettiContainer.remove();
+                    style.remove();
+                }, 5000);
+            }
+            
+            // 创建哭脸动画
+            function createSadFace() {
+                const sadFaceContainer = document.createElement('div');
+                sadFaceContainer.className = 'text-center';
+                
+                // 创建哭脸
+                const sadFace = document.createElement('div');
+                sadFace.className = 'text-6xl md:text-8xl text-yellow-400 animate-bounce';
+                sadFace.innerHTML = '😢';
+                
+                sadFaceContainer.appendChild(sadFace);
+                animationContainer.appendChild(sadFaceContainer);
+                
+                // 添加动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes bounce {
+                        0%, 100% {
+                            transform: translateY(0);
+                        }
+                        50% {
+                            transform: translateY(-20px);
+                        }
+                    }
+                    .animate-bounce {
+                        animation: bounce 1s ease-in-out infinite;
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // 5秒后移除动画
+                setTimeout(function() {
+                    sadFaceContainer.remove();
+                    style.remove();
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
